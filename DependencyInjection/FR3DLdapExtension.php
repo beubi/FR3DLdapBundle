@@ -3,12 +3,14 @@
 namespace FR3D\LdapBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class FR3DLdapExtension extends Extension
 {
+
 
     /**
      * {@inheritDoc}
@@ -36,6 +38,30 @@ class FR3DLdapExtension extends Extension
 
         $container->setParameter('fr3d_ldap.ldap_driver.parameters', $config['driver']);
         $container->setParameter('fr3d_ldap.ldap_manager.parameters', $config['user']);
+
+        if (!empty($config['user']['update'])) {
+            var_dump($config['user']['update']);
+            $userProviderNames = $config['user']['update']['user_providers'];
+            $userManagerNames = $config['user']['update']['user_managers'];
+            $properties = $config['user']['update']['properties'];
+
+            $userProviders = array();
+            $userManagers = array();
+            var_dump($userProviderNames);
+
+            foreach ($userProviderNames as $providerName) {
+                var_dump($container->hasDefinition($providerName));
+                $userProviders[] = $container->getDefinition($providerName);
+            }
+            foreach ($userManagerNames as $userManagerName) {
+                $userManagers[] = $container->getDefinition($userManagerName);
+            }
+
+            $updatingUserProvider = $container->getDefinition('fr3d_ldap.security.user.provider.updating');
+            $updatingUserProvider->replaceArgument(0, $userProviders);
+            $updatingUserProvider->replaceArgument(1, $userManagers);
+            $updatingUserProvider->replaceArgument(3, $properties);
+        }
     }
 
     public function getNamespace()

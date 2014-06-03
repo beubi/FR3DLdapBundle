@@ -7,6 +7,7 @@
     <parameters>
         <parameter key="fr3d_ldap.security.user.provider.class">FR3D\LdapBundle\Security\User\LdapUserProvider</parameter>
         <parameter key="fr3d_ldap.security.authentication.provider.class">FR3D\LdapBundle\Security\Authentication\LdapAuthenticationProvider</parameter>
+        <parameter key="fr3d_ldap.security.user.provider.updating.class">FR3D\LdapBundle\Security\User\LdapUpdatingUserProvider</parameter>
     </parameters>
 
     <services>
@@ -23,6 +24,17 @@
             <argument /> <!-- User provider service -->
             <argument type="service" id="fr3d_ldap.ldap_manager" />
             <argument>%security.authentication.hide_user_not_found%</argument>
+        </service>
+
+        <service id="fr3d_ldap.security.user.provider.updating" class="%fr3d_ldap.security.user.provider.updating.class%">
+            <argument /> <!-- User Provider -->
+            <argument /> <!-- User Manager -->
+            <argument type="service" id="fr3d_ldap.security.user.provider" />
+            <argument /> <!-- Properties -->
+        </service>
+
+        <service id="fr3d_ldap.fosub_bridge.user_manager" class="FR3D\LdapBundle\FOSUBBridge\UserManager">
+            <argument type="service" id="fos_user.user_manager" />
         </service>
 
     </services>
