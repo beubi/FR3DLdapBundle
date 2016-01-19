@@ -75,7 +75,7 @@ class LdapAuthenticationProvider extends UserAuthenticationProvider
                         $ldapUser = $provider->loadUserByUsername($username);
                         $user->setRoles($ldapUser->getRoles());
                         $user->setEmail($ldapUser->getEmail());
-                        $user->setUsername($ldapUser->getEmail());
+                        $user->setUsername($ldapUser->getUsername());
                         $user->setDn($ldapUser->getDn());
                         
                         $this->userManager->updateUser($user);
