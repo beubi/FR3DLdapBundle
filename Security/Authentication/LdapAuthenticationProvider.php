@@ -3,8 +3,10 @@
 namespace FR3D\LdapBundle\Security\Authentication;
 
 use FR3D\LdapBundle\Ldap\LdapManagerInterface;
+use FR3D\LdapBundle\Security\User\LdapUserProvider;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Security\Core\Authentication\Provider\UserAuthenticationProvider;
+use Symfony\Component\Security\Core\User\ChainUserProvider;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
